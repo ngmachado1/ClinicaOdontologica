@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -14,8 +13,9 @@ import java.util.Set;
 public class Odontologo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "odontologo_sequence")
-    @SequenceGenerator(name = "odontologo_sequence", sequenceName = "odontologo_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "odontologo_sequence")
+//    @SequenceGenerator(name = "odontologo_sequence", sequenceName = "odontologo_sequence", allocationSize = 1)
     private Integer id;
     private String apellido;
     private String matricula;

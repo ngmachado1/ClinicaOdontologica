@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -18,14 +19,14 @@ public class OdontologoController {
 
 
     @GetMapping
-    public ResponseEntity<ArrayList<Odontologo>> mostrarOdontologo (){
-        ArrayList<Odontologo> listarOdontologos = odontologoService.mostrarTodos();
+    public ResponseEntity<List<Odontologo>> mostrarOdontologo (){
+        List<Odontologo> listarOdontologos = odontologoService.buscarTodos();
         return ResponseEntity.ok(listarOdontologos);
     }
 
     @GetMapping("/{id}")
     public Optional<Odontologo> mostrarOdontologoPorId(@PathVariable Integer id){
-        return odontologoService.mostrarPorId(id);
+        return odontologoService.buscar(id);
     }
 
     @PostMapping
@@ -35,6 +36,6 @@ public class OdontologoController {
 
     @DeleteMapping("/{id}")
     public void eliminarOdontologoPorId(@PathVariable Integer id){
-        odontologoService.eliminarPorId(id);
+        odontologoService.eliminar(id);
     }
 }

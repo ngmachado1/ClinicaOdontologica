@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,14 +19,14 @@ public class PacienteController {
 
 
     @GetMapping("/todos")
-    public ResponseEntity<ArrayList<Paciente>> mostrarPacientes (){
-        ArrayList<Paciente> listarPaciente = pacienteService.mostrarTodos();
+    public ResponseEntity<List<Paciente>> mostrarPacientes (){
+        List<Paciente> listarPaciente = pacienteService.buscarTodos();
         return ResponseEntity.ok(listarPaciente);
     }
 
     @GetMapping("/{id}")
     public Optional<Paciente> mostrarPacientePorId(@PathVariable Integer id){
-        return pacienteService.mostrarPorId(id);
+        return pacienteService.buscar(id);
     }
 
     @PostMapping
@@ -36,6 +36,6 @@ public class PacienteController {
 
     @DeleteMapping("/{id}")
     public void eliminarPacientePorId(@PathVariable Integer id){
-        pacienteService.eliminarPorId(id);
+        pacienteService.eliminar(id);
     }
 }

@@ -13,8 +13,9 @@ import javax.persistence.*;
 @Getter @Setter
 public class Turno {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "turno_sequence")
-    @SequenceGenerator(name = "turno_sequence", sequenceName = "turno_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "turno_sequence")
+//    @SequenceGenerator(name = "turno_sequence", sequenceName = "turno_sequence", allocationSize = 1)
     private Integer id;
     private Date date;
 

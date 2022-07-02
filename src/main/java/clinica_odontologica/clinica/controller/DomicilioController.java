@@ -13,27 +13,4 @@ import java.util.Optional;
 @RequestMapping("/domicilios")
 public class DomicilioController {
 
-    @Autowired
-    DomicilioServiceImp domicilioService;
-
-    @GetMapping("/todos")
-    public ResponseEntity<ArrayList<Domicilio>> mostrarDomicilios (){
-        ArrayList<Domicilio> listarDomicilios = domicilioService.mostrarTodos();
-        return ResponseEntity.ok(listarDomicilios);
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Domicilio> mostrarDomicilioPorId(@PathVariable Integer id){
-        return domicilioService.mostrarPorId(id);
-    }
-
-    @PostMapping("/guardar")
-    public Domicilio guardarDomicilio(@RequestBody Domicilio domicilio){
-        return domicilioService.guardar(domicilio);
-    }
-
-    @DeleteMapping("/{id}")
-    public void eliminarDomicilioPorId(@PathVariable Integer id){
-        domicilioService.eliminarPorId(id);
-    }
 }
