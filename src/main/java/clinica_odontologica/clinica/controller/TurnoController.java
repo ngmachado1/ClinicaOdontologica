@@ -2,7 +2,10 @@ package clinica_odontologica.clinica.controller;
 
 
 import clinica_odontologica.clinica.Service.ServiceImp.TurnoServiceImp;
+import clinica_odontologica.clinica.dto.TurnoDTO;
 import clinica_odontologica.clinica.entity.Turno;
+import clinica_odontologica.clinica.exceptions.BadRequestException;
+import clinica_odontologica.clinica.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,24 +15,42 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("turnos")
-public class TurnoController {
+public class TurnoController implements ControllerInterface<TurnoDTO> {
 
-    @Autowired
-    TurnoServiceImp turnoService;
+    @Autowired(required = true)
+    TurnoServiceImp service;
 
-    @GetMapping
-    public ResponseEntity<ArrayList<Turno>> mostrarTurnos (){
-        ArrayList<Turno> listarTurnos = turnoService.mostrarTodos();
-        return ResponseEntity.ok(listarTurnos);
+    @Override
+    @PostMapping("/crear")
+    public ResponseEntity<?> crear(@RequestBody TurnoDTO turnoDTO) throws BadRequestException, ResourceNotFoundException {
+        return ResponseEntity.ok(service.guardar(turnoDTO));
     }
 
-    @GetMapping("/{id}")
-    public Optional<Turno> mostrarTurnoPorId(@PathVariable Integer id){
-        return turnoService.mostrarPorId(id);
+    @Override
+    @GetMapping("/todos")
+    public ResponseEntity<?> consultarTodos() throws ResourceNotFoundException {
+        return ResponseEntity.ok(service.buscarTodos());
     }
 
-    @PostMapping
-    public Turno guardarTurno(@RequestBody Turno turno){
-        return turnoService.guardar(turno);
+    @Override
+    public ResponseEntity<?> consultar(Integer id) throws ResourceNotFoundException, BadRequestException {
+        return ResponseEntity.ok(service.buscar(id));
+    }
+
+    @Override
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Integer id) throws ResourceNotFoundException {
+        return ResponseEntity.ok(service.eliminar(id));
+    }
+
+    @Override
+    @PutMapping("/actualizar")
+    public ResponseEntity<?> actualizar(@RequestBody TurnoDTO turnoDTO) throws ResourceNotFoundException, BadRequestException{
+        return ResponseEntity.ok(service.actualizar(turnoDTO));
+    }
+
+    @GetMapping("/proximaSemana")
+    public ResponseEntity<?> turnosProximaSemana() throws ResourceNotFoundException {
+        return ResponseEntity.ok(service.turnosProxSemana());
     }
 }

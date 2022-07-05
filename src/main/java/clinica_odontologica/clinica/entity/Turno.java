@@ -3,8 +3,8 @@ package clinica_odontologica.clinica.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import javax.persistence.*;
 
 
@@ -17,7 +17,7 @@ public class Turno {
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "turno_sequence")
 //    @SequenceGenerator(name = "turno_sequence", sequenceName = "turno_sequence", allocationSize = 1)
     private Integer id;
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name="paciente_id", referencedColumnName = "id", nullable = false)
