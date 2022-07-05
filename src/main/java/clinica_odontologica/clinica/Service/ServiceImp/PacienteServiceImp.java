@@ -55,14 +55,14 @@ public class PacienteServiceImp implements PacienteServiceInterface {
     }
 
     @Override
-    public String actualizar(PacienteDTO entidad) throws ResourceNotFoundException {
+    public String actualizar(PacienteDTO pacienteDto) throws ResourceNotFoundException {
         String respuesta;
-        Optional<Paciente> pacienteAModificar = repository.findById(entidad.getId());
+        Optional<Paciente> pacienteAModificar = repository.findById(pacienteDto.getId());
         if(pacienteAModificar.isPresent()){
-            repository.save(this.actualizarEnBDD(pacienteAModificar.get(), entidad));
-            respuesta = "Actualización con éxito del paciente con id: " + entidad.getId();
+            repository.save(this.actualizarEnBDD(pacienteAModificar.get(), pacienteDto));
+            respuesta = "Actualización con éxito del paciente con id: " + pacienteDto.getId();
         } else {
-            throw new ResourceNotFoundException("No se logró actualizar el paciente. El paciente con id " + entidad.getId() +" no fue encontrado en la base de datos");
+            throw new ResourceNotFoundException("No se logró actualizar el paciente. El paciente con id " + pacienteDto.getId() +" no fue encontrado en la base de datos");
         }
         return respuesta;
     }

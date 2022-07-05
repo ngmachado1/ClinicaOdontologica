@@ -33,7 +33,7 @@ public class OdontologoServiceImp implements OdontologoServiceInterface {
     }
 
     @Override
-    public OdontologoDTO buscar(Integer id) throws BadRequestException, ResourceNotFoundException {
+    public OdontologoDTO buscar(Integer id) throws ResourceNotFoundException {
         if(id != null){
             throw new ResourceNotFoundException("No hay un odontologo con ese ID");
         }
@@ -50,14 +50,14 @@ public class OdontologoServiceImp implements OdontologoServiceInterface {
     }
 
     @Override
-    public String actualizar(OdontologoDTO entidad) throws ResourceNotFoundException {
+    public String actualizar(OdontologoDTO odontologoDto) throws ResourceNotFoundException {
         String respuesta;
-        Optional<Odontologo> odontologoAModificar = repository.findById(entidad.getId());
+        Optional<Odontologo> odontologoAModificar = repository.findById(odontologoDto.getId());
         if(odontologoAModificar.isPresent()){
-            repository.save(this.actualizarEnBDD(odontologoAModificar.get(), entidad));
-            respuesta = "Actualización con éxito del odontólogo con id " + entidad.getId();
+            repository.save(this.actualizarEnBDD(odontologoAModificar.get(), odontologoDto));
+            respuesta = "Actualización con éxito del odontólogo con id " + odontologoDto.getId();
         }else {
-            throw new ResourceNotFoundException("No se logró actualizar el odontólogo. El odontólogo con id " + entidad.getId() + " no fue encontrado en la base de datos");
+            throw new ResourceNotFoundException("No se logró actualizar el odontólogo. El odontólogo con id " + odontologoDto.getId() + " no fue encontrado en la base de datos");
         }
         return respuesta;
     }
@@ -97,8 +97,8 @@ public class OdontologoServiceImp implements OdontologoServiceInterface {
     }
 
     @Override
-    public Set<OdontologoDTO> obtenerOdontologosPorSuApellidoLike(String apellidoOdontolog) {
-        Set<Odontologo> odontologos = repository.getOdontologoByApellidoLike(apellidoOdontolog);
+    public Set<OdontologoDTO> obtenerOdontologosPorSuApellidoLike(String apellidoOdontologo) {
+        Set<Odontologo> odontologos = repository.getOdontologoByApellidoLike(apellidoOdontologo);
         return mapper.getModelMapper().map(odontologos, Set.class);
     }
 

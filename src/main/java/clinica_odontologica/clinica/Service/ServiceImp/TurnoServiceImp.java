@@ -12,7 +12,7 @@ import clinica_odontologica.clinica.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,16 +39,16 @@ public class TurnoServiceImp implements TurnoServiceInterface {
         if (entidad.getPaciente().getId() != null && entidad.getOdontologo() != null){
             PacienteDTO pacienteBuscado = pacienteService.buscarPorId(entidad.getPaciente().getId());
             OdontologoDTO odontologoBuscado = odontologoServiceImp.buscarPorId(entidad.getOdontologo().getId());
-            if (verificarDisponibilidadTurno(odontologoBuscado.getId(), entidad.getFecha())){
-                //Creamos en BDD
+            if (verificarDisponibilidadTurno(odontologoBuscado.getId(), entidad.getDate())){
+                //Creamos en BBDD
                 Turno turno = mapper.getModelMapper().map(entidad, Turno.class);
                 respuesta = mapper.getModelMapper().map(repository.save(turno), TurnoDTO.class);
 
-                //Setemos el odntologo y paciente al JSON de la respuesta
+                //Seteamos el odntologo y paciente al JSON de la respuesta
                 respuesta.setPaciente(pacienteBuscado);
                 respuesta.setOdontologo(odontologoBuscado);
             } else {
-                throw new ResourceNotFoundException("El odontologo con id " + odontologoBuscado.getId() + " ya tiene un turno agendado en la fecha "+ entidad.getFecha());
+                throw new ResourceNotFoundException("El odontologo con id " + odontologoBuscado.getId() + " ya tiene un turno agendado en la fecha "+ entidad.getDate());
             }
         } else {
             throw new BadRequestException("Faltan introducir el id del paciente u odontologo para crear el turno");
@@ -61,12 +61,12 @@ public class TurnoServiceImp implements TurnoServiceInterface {
         return mapper.getModelMapper().map(repository.findById(id), TurnoDTO.class);
     }
 
-    private Boolean verificarDisponibilidadTurno(Integer idOdontologo, LocalDateTime fechaTurno) throws ResourceNotFoundException {
+    private Boolean verificarDisponibilidadTurno(Integer idOdontologo, LocalDate fechaTurno) {
         Boolean respuesta = true;
         List<Turno> listaTurnos = repository.findAll();
         for (Turno t: listaTurnos){
             TurnoDTO turnoDTO = mapper.getModelMapper().map(t,TurnoDTO.class);
-            if (turnoDTO.getOdontologo().getId().equals(idOdontologo) && turnoDTO.getFecha().equals(fechaTurno)){
+            if (turnoDTO.getOdontologo().getId().equals(idOdontologo) && turnoDTO.getDate().equals(fechaTurno)){
                 respuesta = false;
             }
         }
@@ -84,13 +84,13 @@ public class TurnoServiceImp implements TurnoServiceInterface {
     }
 
     @Override
-    public String actualizar(TurnoDTO entidad) throws ResourceNotFoundException, BadRequestException {
+    public String actualizar(TurnoDTO turnoDto) throws ResourceNotFoundException, BadRequestException {
         String respuesta;
-        if (entidad.getId()!=null){
-            Optional<Turno> turnoAModificar = repository.findById(entidad.getId());
+        if (turnoDto.getId()!=null){
+            Optional<Turno> turnoAModificar = repository.findById(turnoDto.getId());
             if (turnoAModificar.isPresent()){
-                repository.save(this.actualizarEnBDD(turnoAModificar.get(), entidad));
-                respuesta = "Actualización con éxito del turno número: " + entidad.getId();
+                repository.save(this.actualizarEnBDD(turnoAModificar.get(), turnoDto));
+                respuesta = "Actualización con éxito del turno número: " + turnoDto.getId();
             }
             else {
                 throw new ResourceNotFoundException("No fue posible encontrar el turno en la base de datos");
@@ -102,8 +102,8 @@ public class TurnoServiceImp implements TurnoServiceInterface {
     }
 
     private Turno actualizarEnBDD(Turno turno, TurnoDTO turnoDTO){
-        if (turnoDTO.getFecha()!=null){
-            turno.setDate(turnoDTO.getFecha());
+        if (turnoDTO.getDate()!=null){
+            turno.setDate(turnoDTO.getDate());
         }
         return turno;
     }
@@ -122,12 +122,12 @@ public class TurnoServiceImp implements TurnoServiceInterface {
     }
 
     public List<TurnoDTO> turnosProxSemana() throws ResourceNotFoundException {
-        LocalDateTime hoy = LocalDateTime.now();
-        LocalDateTime proximaSemana = hoy.plusDays(7);
+        LocalDate hoy = LocalDate.now();
+        LocalDate proximaSemana = hoy.plusDays(7);
         List<TurnoDTO> listaTodosTurnos = this.buscarTodos();
         List<TurnoDTO> turnosProximaSemana = new ArrayList<>();
         for (TurnoDTO turno:listaTodosTurnos){
-            if ((turno.getFecha().isBefore(proximaSemana) && turno.getFecha().isAfter(hoy)) || turno.getFecha().isEqual(hoy) || turno.getFecha().isEqual(proximaSemana)){
+            if ((turno.getDate().isBefore(proximaSemana) && turno.getDate().isAfter(hoy)) || turno.getDate().isEqual(hoy) || turno.getDate().isEqual(proximaSemana)){
                 turnosProximaSemana.add(turno);
             }
         }

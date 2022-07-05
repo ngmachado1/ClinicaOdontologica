@@ -3,7 +3,6 @@ package clinica_odontologica.clinica.controller;
 
 import clinica_odontologica.clinica.Service.ServiceImp.TurnoServiceImp;
 import clinica_odontologica.clinica.dto.TurnoDTO;
-import clinica_odontologica.clinica.entity.Turno;
 import clinica_odontologica.clinica.exceptions.BadRequestException;
 import clinica_odontologica.clinica.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

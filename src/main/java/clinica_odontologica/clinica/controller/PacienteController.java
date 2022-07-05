@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ public class PacienteController implements ControllerInterface<PacienteDTO> {
     @PostMapping("/crear")
     public ResponseEntity<PacienteDTO> crear(@RequestBody PacienteDTO paciente) {
         ResponseEntity<PacienteDTO> response = null;
-        paciente.setFechaIngreso(LocalDate.now());
+        paciente.setFechaIngreso(LocalDateTime.now());
         PacienteDTO pacienteInsertado = pacienteService.guardar(paciente);
         if (pacienteInsertado != null) {
             response = ResponseEntity.ok(pacienteInsertado);
