@@ -23,7 +23,7 @@ public class OdontologoController implements ControllerInterface<OdontologoDTO> 
     @Override
     @PostMapping("/crear")
     public ResponseEntity<OdontologoDTO> crear(@RequestBody OdontologoDTO odontologo) {
-        ResponseEntity<OdontologoDTO> respuesta = ResponseEntity.badRequest().body(odontologo);;
+        ResponseEntity<OdontologoDTO> respuesta = ResponseEntity.badRequest().body(odontologo);
         OdontologoDTO odontologoInsertado = odontologoService.guardar(odontologo);
         if (odontologoInsertado != null){
             respuesta = ResponseEntity.ok(odontologoInsertado);

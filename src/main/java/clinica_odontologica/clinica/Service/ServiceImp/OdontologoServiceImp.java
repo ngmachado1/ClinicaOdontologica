@@ -29,7 +29,6 @@ public class OdontologoServiceImp implements OdontologoServiceInterface {
     public OdontologoDTO guardar(OdontologoDTO entidad){
         Odontologo odontologo = mapper.getModelMapper().map(entidad, Odontologo.class);
         return mapper.getModelMapper().map(repository.save(odontologo), OdontologoDTO.class);
-
     }
 
     @Override

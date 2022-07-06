@@ -25,7 +25,7 @@ public class Paciente {
     private LocalDateTime fecha_ingreso = LocalDateTime.now();
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="domicilio_id", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name="domicilio_id", referencedColumnName = "id")
     private Domicilio domicilio;
 
     @OneToMany(mappedBy = "paciente")
