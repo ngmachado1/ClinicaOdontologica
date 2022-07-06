@@ -12,9 +12,9 @@ public class UserController {
     @Autowired
     AppUserService service;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(){
-        return "home";
+        return "<h1>Hola mundo</h1>";
     }
     @PostMapping("/usuarios/crear")
     public ResponseEntity<?> crear(@RequestBody User user){
